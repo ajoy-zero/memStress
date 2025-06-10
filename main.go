@@ -25,7 +25,6 @@ import (
 	"time"
 
 	humanize "github.com/dustin/go-humanize"
-	psutil "github.com/shirou/gopsutil/mem"
 )
 
 var (
@@ -114,7 +113,11 @@ func main() {
 			time.Sleep(time.Second)
 		}
 	} else {
-		memInfo, _ := psutil.VirtualMemory()
+		totalMem, err := getTotalMemory()
+		if err != nil {
+			fmt.Println("get total memory err:", err)
+			return
+		}
 		var length uint64
 
 		if memSize[len(memSize)-1] != '%' {
@@ -129,7 +132,7 @@ func main() {
 			if err != nil {
 				fmt.Println(err)
 			}
-			length = uint64(float64(memInfo.Total) / 100.0 * percentage)
+			length = uint64(float64(totalMem) / 100.0 * percentage)
 		}
 
 		timeLine, err := time.ParseDuration(growthTime)
