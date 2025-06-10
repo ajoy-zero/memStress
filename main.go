@@ -99,7 +99,7 @@ func main() {
 		for {
 			workQueue <- struct{}{}
 			go func() {
-				cmd := exec.Command("memStress", "--size", memSize, "--workers", fmt.Sprintf("%d", workers),
+				cmd := exec.Command("./memStress", "--size", memSize, "--workers", fmt.Sprintf("%d", workers),
 					"--time", growthTime, "--client", "1")
 				cmd.SysProcAttr = &syscall.SysProcAttr{
 					Pdeathsig: syscall.SIGTERM,
